@@ -78,7 +78,7 @@ export const projects = [
     
     Ideal for social media managers and digital marketing agencies.`,
     price: 2499,
-    techStack: "MERN",
+    techStack: "Spring Boot",
     image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&q=80&w=1000",
     githubUrl: "https://github.com/example/social-dashboard",
     demoUrl: "https://demo-social.example.com"
@@ -99,7 +99,7 @@ export const projects = [
     
     Essential for modern healthcare facilities seeking digital transformation.`,
     price: 5999,
-    techStack: "Java",
+    techStack: "ASP.NET",
     image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1000",
     githubUrl: "https://github.com/example/hospital-management",
     demoUrl: "https://demo-hospital.example.com"

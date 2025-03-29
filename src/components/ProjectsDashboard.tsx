@@ -127,7 +127,7 @@ const ProjectsDashboard: React.FC = () => {
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-2 right-2 bg-black/70 text-white px-3 py-1 rounded-lg font-semibold">
-                  ${project.price}
+                ₹{project.price}
                 </div>
               </div>
               <div className="p-6 relative z-20">

@@ -40,7 +40,7 @@ const ProjectDetails: React.FC = () => {
                 {project.techStack}
               </span>
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
-                ${project.price}
+                ₹{project.price}
               </span>
             </div>
 

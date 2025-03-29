@@ -225,9 +225,9 @@ const ProjectsDashboard: React.FC = () => {
     setDislikes((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
   };
 
-  const filteredProjects = filter === 'all' 
-    ? projects 
-    : projects.filter(project => project.techStack.toLowerCase() === filter.toLowerCase());
+  // const filteredProjects = filter === 'all' 
+  //   ? projects 
+  //   : projects.filter(project => project.techStack.toLowerCase() === filter.toLowerCase());
 
   return (
     <div className="min-h-screen bg-black">
@@ -308,11 +308,9 @@ const ProjectsDashboard: React.FC = () => {
                 </h3>
 
                 <p className="text-sm sm:text-base text-gray-400 mb-4">{project.description}</p>
-                <div className="flex justify-between items-center gap-2">
-                  <span className="bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text font-semibold">
-                    ${project.price}
-                  </span>
-                  <div className="flex gap-4">
+                <div className="flex justify-between items-center md:gap-2">
+                  
+                  <div className="flex gap-2 md:gap-4">
                     <button
                       onClick={() => handleLike(project.id)}
                       className="flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors"
@@ -338,7 +336,7 @@ const ProjectsDashboard: React.FC = () => {
                     ) : (
                       <button
                         onClick={() => handleAddToCart(project.id)}
-                        className="px-3 py-2 bg-green-500/10 text-green-400 rounded-lg border border-green-500/50 hover:bg-green-500/20 transition-all duration-300 text-sm flex items-center gap-2"
+                        className="p-1 md:px-2 md:py-2 bg-green-500/10 text-green-400 rounded-lg border border-green-500/50 hover:bg-green-500/20 transition-all duration-300 text-sm flex items-center gap-2"
                       >
                         <ShoppingCart size={16} />
                         Add to Cart
@@ -346,7 +344,7 @@ const ProjectsDashboard: React.FC = () => {
                     )}
                     <button
                       onClick={() => navigate(`/project/${project.id}`)}
-                      className="px-3 py-2 bg-black text-purple-400 rounded-lg border border-purple-500/50 hover:border-purple-500 hover:text-white hover:bg-purple-500/10 transition-all duration-300 text-sm"
+                      className="p-1 md:px-2 md:py-2 bg-black text-purple-400 rounded-lg border border-purple-500/50 hover:border-purple-500 hover:text-white hover:bg-purple-500/10 transition-all duration-300 text-sm"
                     >
                       View Details
                     </button>

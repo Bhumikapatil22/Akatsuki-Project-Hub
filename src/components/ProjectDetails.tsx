@@ -43,8 +43,10 @@ const ProjectDetails: React.FC = () => {
               <span className="px-3 sm:px-4 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm border border-purple-500/50">
                 {project.techStack}
               </span>
-              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
-                ${project.price}
+
+              <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
+                ₹{project.price}
+
               </span>
             </div>
 

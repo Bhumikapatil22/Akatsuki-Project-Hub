@@ -146,7 +146,9 @@
 // export default ProjectsDashboard;
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, ArrowLeft, Search, ShoppingCart, Trash2 } from 'lucide-react';
+
+import { Plus, ArrowLeft ,Search, ShoppingCart, Trash2, ThumbsDown,ThumbsUp} from 'lucide-react';
+
 import { projects } from '../data/projects';
 import axios from 'axios';
 
@@ -165,6 +167,38 @@ const ProjectsDashboard: React.FC = () => {
   const [cart, setCart] = useState<number[]>([]);
   const navigate = useNavigate();
 
+  const [likes, setLikes] = useState<Record<number, number>>({});
+  const [dislikes, setDislikes] = useState<Record<number, number>>({});
+  // const [projects, setProjects] = useState<Project[]>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState('');
+
+  // Commented API integration code
+  /*
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get<Project[]>('your-api-endpoint/projects');
+        setProjects(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to fetch projects');
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-purple-400">Loading projects...</div>
+      </div>
+    );
+  }*/
+
+
   const filteredProjects = projects
     .filter(project => filter === 'all' || project.techStack.toLowerCase() === filter.toLowerCase())
     .filter(project => 
@@ -182,6 +216,18 @@ const ProjectsDashboard: React.FC = () => {
   const handleRemoveFromCart = (projectId: number) => {
     setCart(cart.filter(id => id !== projectId));
   };
+
+  const handleLike = (id: number) => {
+    setLikes((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+  };
+
+  const handleDislike = (id: number) => {
+    setDislikes((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+  };
+
+  const filteredProjects = filter === 'all' 
+    ? projects 
+    : projects.filter(project => project.techStack.toLowerCase() === filter.toLowerCase());
 
   return (
     <div className="min-h-screen bg-black">
@@ -247,22 +293,39 @@ const ProjectsDashboard: React.FC = () => {
               className="bg-black border border-gray-800 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)]"
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10" />
                 <img
                   src={project.image}
                   alt={project.name}
                   className="w-full h-48 object-cover"
                 />
+                <div className="absolute top-2 right-2 bg-black/70 text-white px-3 py-1 rounded-lg font-semibold">
+                ₹{project.price}
+                </div>
               </div>
               <div className="p-4 sm:p-6 relative z-20">
                 <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
                   {project.name}
                 </h3>
+
                 <p className="text-sm sm:text-base text-gray-400 mb-4">{project.description}</p>
                 <div className="flex justify-between items-center gap-2">
                   <span className="bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text font-semibold">
                     ${project.price}
                   </span>
+                  <div className="flex gap-4">
+                    <button
+                      onClick={() => handleLike(project.id)}
+                      className="flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors"
+                    >
+                      <ThumbsUp size={20} /> {likes[project.id] || 0}
+                    </button>
+                    <button
+                      onClick={() => handleDislike(project.id)}
+                      className="flex items-center gap-2 text-gray-400 hover:text-red-400 transition-colors"
+                    >
+                      <ThumbsDown size={20} /> {dislikes[project.id] || 0}
+                    </button>
+                  </div>
                   <div className="flex gap-2">
                     {cart.includes(project.id) ? (
                       <button
@@ -288,6 +351,8 @@ const ProjectsDashboard: React.FC = () => {
                       View Details
                     </button>
                   </div>
+
+               
                 </div>
               </div>
             </div>
@@ -298,4 +363,4 @@ const ProjectsDashboard: React.FC = () => {
   );
 };
 
-export default ProjectsDashboard;
+export default ProjectsDashboard

@@ -86,7 +86,7 @@ const CreateProject: React.FC = () => {
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
+                  className="w-full px-4 py-3 text-white bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                   placeholder="Enter your project title"
                 />
               </div>
@@ -101,7 +101,7 @@ const CreateProject: React.FC = () => {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
+                  className="w-full px-4 py-3 text-white bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                   placeholder="Brief description of your project"
                 />
               </div>
@@ -122,7 +122,7 @@ const CreateProject: React.FC = () => {
                     id="coverImage"
                     value={formData.coverImageUrl}
                     onChange={(e) => setFormData({ ...formData, coverImageUrl: e.target.value })}
-                    className="flex-1 px-4 py-3 bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
+                    className="flex-1 px-4 py-3 bg-black border text-white border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                     placeholder="Enter image URL"
                   />
                   <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-800 flex items-center justify-center">
@@ -156,7 +156,7 @@ const CreateProject: React.FC = () => {
                     id="liveLink"
                     value={formData.liveLink}
                     onChange={(e) => setFormData({ ...formData, liveLink: e.target.value })}
-                    className="w-full pl-10 pr-4 py-3 bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
+                    className="w-full pl-10 pr-4 py-3 text-white bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                     placeholder="https://your-demo-url.com"
                   />
                 </div>
@@ -207,7 +207,7 @@ const CreateProject: React.FC = () => {
                     id="price"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="w-full pl-8 pr-4 py-3 bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
+                    className="w-full pl-8 text-white pr-4 py-3 bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                     placeholder="0.00"
                     min="0"
                     step="1"

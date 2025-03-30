@@ -95,7 +95,7 @@ const PurchaseForm: React.FC = () => {
           </div>
 
           <div className="mb-4">
-            <p className="text-gray-400">Price: <span className="text-purple-400">${project.price}</span></p>
+            <p className="text-gray-400">Price: <span className="text-purple-400">₹{project.price}</span></p>
           </div>
           
           <button

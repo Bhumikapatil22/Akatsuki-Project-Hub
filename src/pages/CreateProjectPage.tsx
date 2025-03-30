@@ -4,6 +4,8 @@ import RichTextEditor from 'reactjs-tiptap-editor';
 import { BaseKit, Bold, BulletList, Code, CodeBlock, Color, FontSize, Heading, Italic } from 'reactjs-tiptap-editor/extension-bundle';
 import 'reactjs-tiptap-editor/style.css';
 import Navbar from '../components/Navbar';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const extensions = [
   BaseKit.configure({
@@ -49,11 +51,40 @@ const CreateProject: React.FC = () => {
     'TypeScript', 'JavaScript', 'Go', 'Rust'
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(formData);
-    // Handle form submission
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   console.log(formData);
+  //   // Handle form submission
+  // };
+
+
+const navigate = useNavigate();
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  try {
+    const response = await axios.post(
+      'https://akatsuki-project-hub-backend.vercel.app/api/projects/create',
+      formData
+        
+    );
+    
+    console.log('Project Created:', response.data);
+    console.log("Details Content:", formData.details);
+    // Navigate to dashboard after successful submission
+    navigate('/dashboard');
+  }  catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error)
+      console.error("Axios Error:", error.response?.data || error.message);
+    } else {
+      console.error("Unexpected Error:", error);
+    }
+  }
+  
+};
+
 
   return (
     <div className="min-h-screen bg-black">

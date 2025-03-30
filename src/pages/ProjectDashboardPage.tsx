@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Trash2, ThumbsDown, ThumbsUp } from 'lucide-react';
-import { projects } from '../data/projects';
+// import { projects } from '../data/projects';
 import Navbar from '../components/Navbar';
+import axios from 'axios';
 
-// interface Project {
-//   id: number;
-//   name: string;
-//   description: string;
-//   price: number;
-//   techStack: string;
-//   image: string;
-// }
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  techStack: string;
+  coverImage: string;
+}
 
 const ProjectsDashboard: React.FC = () => {
   const [filter, setFilter] = useState('all');
@@ -21,16 +23,16 @@ const ProjectsDashboard: React.FC = () => {
 
   const [likes, setLikes] = useState<Record<number, number>>({});
   const [dislikes, setDislikes] = useState<Record<number, number>>({});
-  // const [projects, setProjects] = useState<Project[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState('');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   // Commented API integration code
-  /*
+  
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get<Project[]>('your-api-endpoint/projects');
+        const response = await axios.get<Project[]>('https://akatsuki-project-hub-backend.vercel.app/api/projects/all');
         setProjects(response.data);
         setLoading(false);
       } catch (err) {
@@ -48,14 +50,14 @@ const ProjectsDashboard: React.FC = () => {
         <div className="text-purple-400">Loading projects...</div>
       </div>
     );
-  }*/
+  }
 
 
   const filteredProjects = projects
     .filter(project => filter === 'all' || project.techStack.toLowerCase() === filter.toLowerCase())
     .filter(project =>
       searchQuery === '' ||
-      project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -112,8 +114,8 @@ const ProjectsDashboard: React.FC = () => {
             >
               <div className="relative">
                 <img
-                  src={project.image}
-                  alt={project.name}
+                  src={project.coverImage}
+                  alt={project.title}
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-2 right-2 bg-black/70 text-white px-3 py-1 rounded-lg font-semibold">
@@ -122,7 +124,7 @@ const ProjectsDashboard: React.FC = () => {
               </div>
               <div className="p-4 sm:p-6 relative z-20">
                 <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
-                  {project.name}
+                  {project.title}
                 </h3>
 
                 <p className="text-sm sm:text-base text-gray-400 mb-4">{project.description}</p>

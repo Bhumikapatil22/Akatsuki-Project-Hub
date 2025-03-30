@@ -28,14 +28,14 @@ const ProjectDetails: React.FC = () => {
         <div className="container mx-auto max-w-4xl">
           <div className="bg-black border border-purple-500/20 rounded-xl overflow-hidden shadow-[0_0_25px_rgba(168,85,247,0.1)]">
             <img
-              src={project.image}
-              alt={project.name}
+              src={project.coverImage}
+              alt={project.title}
               className="w-full h-48 sm:h-64 object-cover"
             />
 
             <div className="p-4 sm:p-8">
               <h1 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
-                {project.name}
+                {project.title}
               </h1>
 
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
@@ -51,7 +51,7 @@ const ProjectDetails: React.FC = () => {
 
               <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <a
-                  href={project.demoUrl}
+                  href={project.liveLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/50 hover:bg-purple-500/20 transition-all text-sm sm:text-base"

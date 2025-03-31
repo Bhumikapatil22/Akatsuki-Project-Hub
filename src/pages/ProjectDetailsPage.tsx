@@ -5,9 +5,9 @@ import { projects } from '../data/projects';
 import Navbar from '../components/Navbar';
 
 const ProjectDetails: React.FC = () => {
-  const { id } = useParams();
+  const { _id } = useParams();
   const navigate = useNavigate();
-  const project = projects.find(p => p.id === Number(id));
+  const project = projects.find(p => p._id === Number(_id));
 
   if (!project) {
     return <div>Project not found</div>;
@@ -26,7 +26,7 @@ const ProjectDetails: React.FC = () => {
 
       <div className="container mx-auto px-4 my-16">
         <div className="container mx-auto max-w-4xl">
-          <div className="bg-black border border-purple-500/20 rounded-xl overflow-hidden shadow-[0_0_25px_rgba(168,85,247,0.1)]">
+          <div className="bg-black border border-purple-500/20 rounded-xl overflow-h_idden shadow-[0_0_25px_rgba(168,85,247,0.1)]">
             <img
               src={project.coverImage}
               alt={project.title}
@@ -40,7 +40,7 @@ const ProjectDetails: React.FC = () => {
 
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
                 <span className="px-3 sm:px-4 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm border border-purple-500/50">
-                  {project.techStack}
+                  {project.techStack.map}
                 </span>
 
                 <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">

@@ -1,17 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Github, Instagram, Linkedin, ExternalLink } from 'lucide-react';
-import { projects } from '../data/projects';
+// import { projects } from '../data/projects';
 import Navbar from '../components/Navbar';
+import axios from 'axios';
 
 const ProjectDetails: React.FC = () => {
   const { _id } = useParams();
   const navigate = useNavigate();
-  const project = projects.find(p => p._id === Number(_id));
+  // const project = projects.find(p => p.id === Number(_id));
+console.log(_id)
+ 
 
-  if (!project) {
-    return <div>Project not found</div>;
-  }
+//axios 
+const [project, setProject] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    axios.get(`https://akatsuki-project-hub-backend.vercel.app/project/${_id}`)
+      .then(response => {
+        console.log(response.data);
+        setProject(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError('Project not found');
+        setLoading(false);
+      });
+  }, [_id]);
+
+  if (loading) return <div className="text-white text-center">Loading...</div>;
+  if (error) return <div className="text-red-500 text-center">{error}</div>;
+
+//axios end
+if (!project) {
+  return <div>Project not found</div>;
+}
 
   const handlePurchase = () => {
     navigate('/purchase', { state: { project } });
@@ -28,7 +53,7 @@ const ProjectDetails: React.FC = () => {
         <div className="container mx-auto max-w-4xl">
           <div className="bg-black border border-purple-500/20 rounded-xl overflow-h_idden shadow-[0_0_25px_rgba(168,85,247,0.1)]">
             <img
-              src={project.coverImage}
+              src={project.coverImageUrl}
               alt={project.title}
               className="w-full h-48 sm:h-64 object-cover"
             />
@@ -39,9 +64,9 @@ const ProjectDetails: React.FC = () => {
               </h1>
 
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
-                <span className="px-3 sm:px-4 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm border border-purple-500/50">
+                {/* <span className="px-3 sm:px-4 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm border border-purple-500/50">
                   {project.techStack.map}
-                </span>
+                </span> */}
 
                 <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
                   ₹{project.price}
@@ -69,7 +94,7 @@ const ProjectDetails: React.FC = () => {
 
               <div className="prose prose-invert max-w-none mb-6 sm:mb-8">
                 <div className="text-sm sm:text-base text-gray-400 whitespace-pre-line">
-                  {project.longDescription}
+                  {project.details}
                 </div>
               </div>
 

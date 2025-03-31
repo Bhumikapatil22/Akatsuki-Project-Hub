@@ -17,7 +17,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<ProjectDashboard />} />
           <Route path="/create-project" element={<CreateProject />} />
-          <Route path="/project/:id" element={<ProjectDetails />} />
+          <Route path="/project/:_id" element={<ProjectDetails />} />
           <Route path="/purchase" element={<PurchaseForm />} />
           {/* <Route path="/contact" element={<ContactForm project={selectedProject} onClose={() => window.history.back()} />} /> */}
         </Routes>

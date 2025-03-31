@@ -24,7 +24,7 @@ const extensions = [
   Bold,
   Italic,
 
-  
+
   Color,
   BulletList,
   Code,
@@ -40,13 +40,13 @@ const CreateProject: React.FC = () => {
     coverImageUrl: '',
     liveLink: '',
     description: '',
-    techStack: [] as string[],
+    techStack: '',
     price: '',
     details: ''
   });
 
   const techStackOptions = [
-    'React', 'Next.js', 'Vue', 'Angular', 'Node.js',
+    'MERN', 'Java', 'Vue', 'Angular', 'Node.js',
     'Python', 'Django', 'Flask', 'Ruby on Rails',
     'PostgreSQL', 'MongoDB', 'MySQL', 'Redis',
     'Docker', 'Kubernetes', 'AWS', 'GCP', 'Azure',
@@ -60,33 +60,34 @@ const CreateProject: React.FC = () => {
   // };
 
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  
-  try {
-    const response = await axios.post(
-      'https://akatsuki-cohert-api.vercel.app/api/projects/create',
-      formData
-    );
-    
-    console.log('Project Created:', response.data);
-    console.log("Details Content:", formData.details);
-    // Navigate to dashboard after successful submission
-    navigate('/dashboard');
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (!error.response) {
-        console.error("Network Error: Unable to reach the server. Please check your connection or try again later.");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        'https://akatsuki-cohert-api.vercel.app/api/projects/create',
+        
+        formData
+      );
+
+      console.log('Project Created:', response.data);
+      console.log("Details Content:", formData.details);
+      // Navigate to dashboard after successful submission
+      navigate('/dashboard');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (!error.response) {
+          console.error("Network Error: Unable to reach the server. Please check your connection or try again later.");
+        } else {
+          console.error("Axios Error:", error.response?.data || error.message);
+        }
       } else {
-        console.error("Axios Error:", error.response?.data || error.message);
+        console.error("Unexpected Error:", error);
       }
-    } else {
-      console.error("Unexpected Error:", error);
     }
-  }
-};
+  };
 
 
   return (
@@ -206,7 +207,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Tech Stack
                 </label>
-                <div className="flex flex-wrap gap-2 p-4">
+                {/* <div className="flex flex-wrap gap-2 p-4">
                   {techStackOptions.map((tech) => (
                     <button
                       key={tech}
@@ -226,6 +227,16 @@ const handleSubmit = async (e: React.FormEvent) => {
                       {tech}
                     </button>
                   ))}
+                </div> */}
+
+                <div className="bg-gray-900/50 rounded-xl p-6 space-y-6">
+                  <h2 className="text-xl font-semibold text-purple-400 mb-4">Tech Stack</h2>
+                  <select value={formData.techStack} onChange={(e) => setFormData({ ...formData, techStack: e.target.value })} className="w-full px-4 py-3 bg-black border border-gray-700 text-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500">
+                    <option value="">Select a tech stack</option>
+                    {techStackOptions.map((tech) => (
+                      <option key={tech} value={tech}>{tech}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
 

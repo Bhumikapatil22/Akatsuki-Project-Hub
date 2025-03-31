@@ -12,7 +12,7 @@ interface Project {
   description: string;
   price: number;
   techStack: string;
-  coverImage: string;
+  coverImageUrl: string;
 }
 
 const ProjectsDashboard: React.FC = () => {
@@ -33,6 +33,7 @@ const ProjectsDashboard: React.FC = () => {
     const fetchProjects = async () => {
       try {
         const response = await axios.get<Project[]>('https://akatsuki-cohert-api.vercel.app/api/projects');
+        console.log(response.data);
         setProjects(response.data);
         setLoading(false);
       } catch (err) {
@@ -53,13 +54,44 @@ const ProjectsDashboard: React.FC = () => {
   }
 
 
-  const filteredProjects = projects
-    .filter(project => filter === 'all' || project.techStack.toLowerCase() === filter.toLowerCase())
-    .filter(project =>
-      searchQuery === '' ||
-      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  // const filteredProjects = projects
+  //   .filter(project => filter === 'all' || project.techStack.toLowerCase() === filter.toLowerCase())
+  //   .filter(project =>
+  //     searchQuery === '' ||
+  //     project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     project.description.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
+
+
+
+//   const filteredProjects = projects
+//   .filter(project => 
+//     filter === 'all' || 
+//     (typeof project.techStack === 'string' && project.techStack.toLowerCase() === filter.toLowerCase())
+//   )
+//   .filter(project =>
+//     searchQuery === '' ||
+//     project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//     project.description.toLowerCase().includes(searchQuery.toLowerCase())
+//   );
+// console.log(projects.map(p => ({ id: p._id, techStack: p.techStack })));
+
+
+const filteredProjects = projects
+  .filter(project => 
+    filter === 'all' || 
+    (Array.isArray(project.techStack) && project.techStack.length === 1 && project.techStack[0].toLowerCase() === filter.toLowerCase())
+  )
+  .filter(project =>
+    searchQuery === '' ||
+    project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    project.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+// Debugging: Log the format of techStack for each project
+console.log(projects.map(p => ({ id: p._id, techStack: p.techStack })));
+
+
 
   const handleAddToCart = (projectId: number) => {
     if (!cart.includes(projectId)) {
@@ -114,7 +146,7 @@ const ProjectsDashboard: React.FC = () => {
             >
               <div className="relative">
                 <img
-                  src={project.coverImage}
+                  src={project.coverImageUrl}
                   alt={project.title}
                   className="w-full h-48 object-cover"
                 />

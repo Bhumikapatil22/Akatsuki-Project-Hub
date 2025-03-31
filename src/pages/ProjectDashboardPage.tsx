@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar';
 import axios from 'axios';
 
 interface Project {
-  id: number;
+  _id: number;
   title: string;
   description: string;
   price: number;
@@ -32,7 +32,7 @@ const ProjectsDashboard: React.FC = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get<Project[]>('https://akatsuki-project-hub-backend.vercel.app/api/projects/all');
+        const response = await axios.get<Project[]>('https://akatsuki-cohert-api.vercel.app/api/projects');
         setProjects(response.data);
         setLoading(false);
       } catch (err) {
@@ -109,7 +109,7 @@ const ProjectsDashboard: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredProjects.map((project) => (
             <div
-              key={project.id}
+              key={project._id}
               className="bg-black border border-gray-800 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)]"
             >
               <div className="relative">
@@ -132,22 +132,22 @@ const ProjectsDashboard: React.FC = () => {
 
                   <div className="flex gap-2 md:gap-4">
                     <button
-                      onClick={() => handleLike(project.id)}
+                      onClick={() => handleLike(project._id)}
                       className="flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors"
                     >
-                      <ThumbsUp size={20} /> {likes[project.id] || 0}
+                      <ThumbsUp size={20} /> {likes[project._id] || 0}
                     </button>
                     <button
-                      onClick={() => handleDislike(project.id)}
+                      onClick={() => handleDislike(project._id)}
                       className="flex items-center gap-2 text-gray-400 hover:text-red-400 transition-colors"
                     >
-                      <ThumbsDown size={20} /> {dislikes[project.id] || 0}
+                      <ThumbsDown size={20} /> {dislikes[project._id] || 0}
                     </button>
                   </div>
                   <div className="flex gap-2">
-                    {cart.includes(project.id) ? (
+                    {cart.includes(project._id) ? (
                       <button
-                        onClick={() => handleRemoveFromCart(project.id)}
+                        onClick={() => handleRemoveFromCart(project._id)}
                         className="px-3 py-2 bg-red-500/10 text-red-400 rounded-lg border border-red-500/50 hover:bg-red-500/20 transition-all duration-300 text-sm flex items-center gap-2"
                       >
                         <Trash2 size={16} />
@@ -155,7 +155,7 @@ const ProjectsDashboard: React.FC = () => {
                       </button>
                     ) : (
                       <button
-                        onClick={() => handleAddToCart(project.id)}
+                        onClick={() => handleAddToCart(project._id)}
                         className="p-1 md:px-2 md:py-2 bg-green-500/10 text-green-400 rounded-lg border border-green-500/50 hover:bg-green-500/20 transition-all duration-300 text-sm flex items-center gap-2"
                       >
                         <ShoppingCart size={16} />
@@ -163,7 +163,7 @@ const ProjectsDashboard: React.FC = () => {
                       </button>
                     )}
                     <button
-                      onClick={() => navigate(`/project/${project.id}`)}
+                      onClick={() => navigate(`/project/${project._id}`)}
                       className="p-1 md:px-2 md:py-2 bg-black text-purple-400 rounded-lg border border-purple-500/50 hover:border-purple-500 hover:text-white hover:bg-purple-500/10 transition-all duration-300 text-sm"
                     >
                       View Details

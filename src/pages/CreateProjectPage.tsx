@@ -23,6 +23,8 @@ const extensions = [
   // Import Extensions Here
   Bold,
   Italic,
+
+  
   Color,
   BulletList,
   Code,
@@ -65,24 +67,25 @@ const handleSubmit = async (e: React.FormEvent) => {
   
   try {
     const response = await axios.post(
-      'https://akatsuki-project-hub-backend.vercel.app/api/projects/create',
+      'https://akatsuki-cohert-api.vercel.app/api/projects/create',
       formData
-        
     );
     
     console.log('Project Created:', response.data);
     console.log("Details Content:", formData.details);
     // Navigate to dashboard after successful submission
     navigate('/dashboard');
-  }  catch (error) {
+  } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log(error)
-      console.error("Axios Error:", error.response?.data || error.message);
+      if (!error.response) {
+        console.error("Network Error: Unable to reach the server. Please check your connection or try again later.");
+      } else {
+        console.error("Axios Error:", error.response?.data || error.message);
+      }
     } else {
       console.error("Unexpected Error:", error);
     }
   }
-  
 };
 
 
@@ -163,7 +166,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                         alt="Preview"
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/64?text=Error';
+                          (e.target as HTMLImageElement).src = '';
                         }}
                       />
                     ) : (

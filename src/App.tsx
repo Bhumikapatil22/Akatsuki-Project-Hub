@@ -5,10 +5,8 @@ import CreateProject from './pages/CreateProjectPage';
 import ProjectDetails from './pages/ProjectDetailsPage';
 import PurchaseForm from './components/PurchaseForm';
 import Footer from './components/Footer';
-// import ContactForm from './components/ContactForm';
 
 function App() {
-  // const [selectedProject, setSelectedProject] = useState(null);
 
   return (
     <Router>
@@ -19,9 +17,7 @@ function App() {
           <Route path="/create-project" element={<CreateProject />} />
           <Route path="/project/:_id" element={<ProjectDetails />} />
           <Route path="/purchase" element={<PurchaseForm />} />
-          {/* <Route path="/contact" element={<ContactForm project={selectedProject} onClose={() => window.history.back()} />} /> */}
         </Routes>
-
         <Footer />
       </div>
     </Router>

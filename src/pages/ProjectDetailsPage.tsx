@@ -1,42 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Github, Instagram, Linkedin, ExternalLink } from 'lucide-react';
-// import { projects } from '../data/projects';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
+import { IProject } from '../types';
 
 const ProjectDetails: React.FC = () => {
-  const { _id } = useParams();
-  const navigate = useNavigate();
-  // const project = projects.find(p => p.id === Number(_id));
-console.log(_id)
- 
 
-//axios 
-const [project, setProject] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  // Extract ID from parameters
+  const { _id } = useParams();
+
+  console.log(_id)
+
+  const navigate = useNavigate();
+
+  const [project, setProject] = useState<IProject | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get(`https://akatsuki-project-hub-backend.vercel.app/project/${_id}`)
+    const BASE_URL = import.meta.env.VITE_BACKEND_API;
+    axios.get(`${BASE_URL}/api/project/${_id}`)
       .then(response => {
         console.log(response.data);
         setProject(response.data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err: unknown) => {
+        console.log(err)
         setError('Project not found');
         setLoading(false);
       });
+
   }, [_id]);
 
-  if (loading) return <div className="text-white text-center">Loading...</div>;
-  if (error) return <div className="text-red-500 text-center">{error}</div>;
 
-//axios end
-if (!project) {
-  return <div>Project not found</div>;
-}
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-2xl text-purple-400">Loading projects...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-red-700">{error}</div>
+      </div>
+    );
+  }
+
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-red-700">Project not found</div>
+      </div>
+    );
+  }
 
   const handlePurchase = () => {
     navigate('/purchase', { state: { project } });
@@ -64,13 +85,12 @@ if (!project) {
               </h1>
 
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
-                {/* <span className="px-3 sm:px-4 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm border border-purple-500/50">
-                  {project.techStack.map}
-                </span> */}
+                <span className="px-3 sm:px-4 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm border border-purple-500/50">
+                  {project.techStack}
+                </span>
 
                 <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
                   ₹{project.price}
-
                 </span>
               </div>
 
@@ -93,10 +113,12 @@ if (!project) {
               </div>
 
               <div className="prose prose-invert max-w-none mb-6 sm:mb-8">
-                <div className="text-sm sm:text-base text-gray-400 whitespace-pre-line">
-                  {project.details}
-                </div>
+                <div
+                  className="text-sm sm:text-base text-gray-400 whitespace-pre-line"
+                  dangerouslySetInnerHTML={{ __html: project.details }}
+                />
               </div>
+
 
               <div className="border-t border-purple-500/20 pt-6">
                 <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white">Contact Developer</h3>

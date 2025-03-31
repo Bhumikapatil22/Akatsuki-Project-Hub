@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ImagePlus, LinkIcon } from 'lucide-react';
+import axios from 'axios';
+import { IProject } from '../types';
+import { useNavigate } from 'react-router-dom';
+import { ImagePlus, LinkIcon, Loader2 } from 'lucide-react';
+import Navbar from '../components/Navbar';
 import RichTextEditor from 'reactjs-tiptap-editor';
 import { BaseKit, Bold, BulletList, Code, CodeBlock, Color, FontSize, Heading, Italic } from 'reactjs-tiptap-editor/extension-bundle';
 import 'reactjs-tiptap-editor/style.css';
-import Navbar from '../components/Navbar';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 
 const extensions = [
   BaseKit.configure({
@@ -23,8 +25,6 @@ const extensions = [
   // Import Extensions Here
   Bold,
   Italic,
-
-
   Color,
   BulletList,
   Code,
@@ -35,60 +35,52 @@ const extensions = [
 
 const CreateProject: React.FC = () => {
 
-  const [formData, setFormData] = useState({
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [formData, setFormData] = useState<IProject>({
+    _id: 0,
     title: '',
     coverImageUrl: '',
     liveLink: '',
     description: '',
     techStack: '',
-    price: '',
+    price: 0,
     details: ''
   });
 
   const techStackOptions = [
-    'MERN', 'Java', 'Vue', 'Angular', 'Node.js',
-    'Python', 'Django', 'Flask', 'Ruby on Rails',
-    'PostgreSQL', 'MongoDB', 'MySQL', 'Redis',
-    'Docker', 'Kubernetes', 'AWS', 'GCP', 'Azure',
-    'TypeScript', 'JavaScript', 'Go', 'Rust'
+    'MERN', 'Java', 'Node.js', 'Python', 'Django', 'Flask', 'Ruby on Rails', 'Angular', 'Go', 'Rust'
   ];
-
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   console.log(formData);
-  //   // Handle form submission
-  // };
-
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        'https://akatsuki-cohert-api.vercel.app/api/projects/create',
-        
-        formData
-      );
+    setLoading(true);
 
-      console.log('Project Created:', response.data);
-      console.log("Details Content:", formData.details);
-      // Navigate to dashboard after successful submission
-      navigate('/dashboard');
+    try {
+      const BASE_URL = import.meta.env.VITE_BACKEND_API;
+      const response = await axios.post(`${BASE_URL}/api/project/create`, formData);
+      console.log('Project created successfully:', response.data);
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (!error.response) {
-          console.error("Network Error: Unable to reach the server. Please check your connection or try again later.");
-        } else {
-          console.error("Axios Error:", error.response?.data || error.message);
-        }
-      } else {
-        console.error("Unexpected Error:", error);
-      }
+      console.error("Unexpected Error occured:", error);
+    } finally {
+      // Navigate to dashboard after submission
+      setLoading(false);
+      navigate('/dashboard');
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+
+    console.log(name + " : " + value)
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === 'price' ? (value === '' ? 0 : Number(value)) : value,
+    }));
+  };
 
   return (
     <div className="min-h-screen bg-black">
@@ -118,9 +110,10 @@ const CreateProject: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  id="title"
+                  id='title'
+                  name='title'
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 text-white bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                   placeholder="Enter your project title"
                 />
@@ -133,8 +126,9 @@ const CreateProject: React.FC = () => {
                 </label>
                 <textarea
                   id="description"
+                  name='description'
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={handleChange}
                   rows={3}
                   className="w-full px-4 py-3 text-white bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                   placeholder="Brief description of your project"
@@ -148,15 +142,16 @@ const CreateProject: React.FC = () => {
 
               {/* Cover Image URL Input */}
               <div>
-                <label htmlFor="coverImage" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="coverImageUrl" className="block text-sm font-medium text-gray-300 mb-2">
                   Cover Image
                 </label>
                 <div className="flex gap-4">
                   <input
                     type="url"
-                    id="coverImage"
+                    id="coverImageUrl"
+                    name='coverImageUrl'
                     value={formData.coverImageUrl}
-                    onChange={(e) => setFormData({ ...formData, coverImageUrl: e.target.value })}
+                    onChange={handleChange}
                     className="flex-1 px-4 py-3 bg-black border text-white border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                     placeholder="Enter image URL"
                   />
@@ -189,8 +184,9 @@ const CreateProject: React.FC = () => {
                   <input
                     type="url"
                     id="liveLink"
+                    name='liveLink'
                     value={formData.liveLink}
-                    onChange={(e) => setFormData({ ...formData, liveLink: e.target.value })}
+                    onChange={handleChange}
                     className="w-full pl-10 pr-4 py-3 text-white bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                     placeholder="https://your-demo-url.com"
                   />
@@ -207,36 +203,24 @@ const CreateProject: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Tech Stack
                 </label>
-                {/* <div className="flex flex-wrap gap-2 p-4">
-                  {techStackOptions.map((tech) => (
-                    <button
-                      key={tech}
-                      type="button"
-                      onClick={() => {
-                        const newTechStack = formData.techStack.includes(tech)
-                          ? formData.techStack.filter(t => t !== tech)
-                          : [...formData.techStack, tech];
-                        setFormData({ ...formData, techStack: newTechStack });
-                      }}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors
-                      ${formData.techStack.includes(tech)
-                          ? 'bg-purple-400 text-black'
-                          : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                        }`}
-                    >
-                      {tech}
-                    </button>
-                  ))}
-                </div> */}
 
                 <div className="bg-gray-900/50 rounded-xl p-6 space-y-6">
                   <h2 className="text-xl font-semibold text-purple-400 mb-4">Tech Stack</h2>
-                  <select value={formData.techStack} onChange={(e) => setFormData({ ...formData, techStack: e.target.value })} className="w-full px-4 py-3 bg-black border border-gray-700 text-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500">
+
+                  <select
+                    name='techStack'
+                    value={formData.techStack}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-black border border-gray-700 text-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500"
+                  >
                     <option value="">Select a tech stack</option>
+
                     {techStackOptions.map((tech) => (
                       <option key={tech} value={tech}>{tech}</option>
                     ))}
+
                   </select>
+
                 </div>
               </div>
 
@@ -250,11 +234,12 @@ const CreateProject: React.FC = () => {
                   <input
                     type="number"
                     id="price"
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                    name='price'
+                    value={formData.price === 0 ? '' : formData.price} 
+                    onChange={handleChange}
                     className="w-full pl-8 text-white pr-4 py-3 bg-black border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
                     placeholder="0.00"
-                    min="0"
+                    min={0}
                     step="1"
                   />
                 </div>
@@ -281,10 +266,19 @@ const CreateProject: React.FC = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="px-8 py-3 bg-gradient-to-r from-purple-400 to-pink-500 text-white font-medium rounded-lg
-                hover:from-purple-500 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-black"
+                disabled={loading}
+                className={`px-8 py-3 bg-gradient-to-r from-purple-400 to-pink-500 text-white font-medium rounded-lg
+                          hover:from-purple-500 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 
+                          focus:ring-offset-2 focus:ring-offset-black ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                Create Project
+                {loading ? (
+                  <div className="flex items-center">
+                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                    Creating...
+                  </div>
+                ) : (
+                  'Create Project'
+                )}
               </button>
             </div>
           </form>

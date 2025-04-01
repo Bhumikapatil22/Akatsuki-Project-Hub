@@ -59,8 +59,7 @@ const CreateProject: React.FC = () => {
     setLoading(true);
 
     try {
-      const BASE_URL = import.meta.env.VITE_BACKEND_API;
-      const response = await axios.post(`${BASE_URL}/api/project/create`, formData);
+      const response = await axios.post("https://akatsuki-cohert-api.vercel.app/api/projects/create", formData);
       console.log('Project created successfully:', response.data);
     } catch (error) {
       console.error("Unexpected Error occured:", error);

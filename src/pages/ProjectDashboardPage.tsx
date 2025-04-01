@@ -12,7 +12,7 @@ const ProjectsDashboard: React.FC = () => {
   const navigate = useNavigate();
 
   const techStackOptions = [
-    'MERN', 'Java', 'Node.js', 'Python', 'Django', 'Flask', 'Ruby on Rails', 'Angular', 'Go', 'Rust'
+    'MERN', 'Java', 'Node.js', 'Python'
   ];
 
 
@@ -29,8 +29,8 @@ const ProjectsDashboard: React.FC = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const BASE_URL = import.meta.env.VITE_BACKEND_API;
-        const response = await axios.get<IProject[]>(`${BASE_URL}/api/project`);
+       
+        const response = await axios.get<IProject[]>(`https://akatsuki-cohert.vercel.app/api/projects`);
         console.log(response.data);
         setProjects(response.data);
         setLoading(false);

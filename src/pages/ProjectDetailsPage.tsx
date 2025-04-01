@@ -36,6 +36,7 @@ const ProjectDetails: React.FC = () => {
   //axios end
   if (!project) {
     return <div>Project not found</div>;
+  }
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">

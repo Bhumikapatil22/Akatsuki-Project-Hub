@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Github, Instagram, Linkedin, ExternalLink } from 'lucide-react';
-// import { projects } from '../data/projects';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
+import { IProject } from '../types';
 
 const ProjectDetails: React.FC = () => {
   const { _id } = useParams();
@@ -24,18 +24,40 @@ const ProjectDetails: React.FC = () => {
         setProject(response.data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err: unknown) => {
+        console.log(err)
         setError('Project not found');
         setLoading(false);
       });
+
   }, [_id]);
 
-  if (loading) return <div className="text-white text-center">Loading...</div>;
-  if (error) return <div className="text-red-500 text-center">{error}</div>;
 
   //axios end
   if (!project) {
     return <div>Project not found</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-2xl text-purple-400">Loading projects...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-red-700">{error}</div>
+      </div>
+    );
+  }
+
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-red-700">Project not found</div>
+      </div>
+    );
   }
 
   const handlePurchase = () => {
@@ -64,13 +86,12 @@ const ProjectDetails: React.FC = () => {
               </h1>
 
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
-                {/* <span className="px-3 sm:px-4 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm border border-purple-500/50">
-                  {project.techStack.map}
-                </span> */}
+                <span className="px-3 sm:px-4 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm border border-purple-500/50">
+                  {project.techStack}
+                </span>
 
                 <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
                   ₹{project.price}
-
                 </span>
               </div>
 

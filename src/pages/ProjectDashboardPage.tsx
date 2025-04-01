@@ -12,7 +12,7 @@ const ProjectsDashboard: React.FC = () => {
   const navigate = useNavigate();
 
   const techStackOptions = [
-    'MERN', 'Java', 'Node.js', 'Python'
+    'MERN', 'Java', 'Python'
   ];
 
 

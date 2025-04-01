@@ -9,16 +9,16 @@ const ProjectDetails: React.FC = () => {
   const { _id } = useParams();
   const navigate = useNavigate();
   // const project = projects.find(p => p.id === Number(_id));
-console.log(_id)
- 
+  console.log(_id)
 
-//axios 
-const [project, setProject] = useState<any>(null);
+
+  //axios 
+  const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get(`https://akatsuki-project-hub-backend.vercel.app/project/${_id}`)
+    axios.get(`https://akatsuki-cohert-api.vercel.app/api/projects/${_id}`)
       .then(response => {
         console.log(response.data);
         setProject(response.data);
@@ -33,10 +33,10 @@ const [project, setProject] = useState<any>(null);
   if (loading) return <div className="text-white text-center">Loading...</div>;
   if (error) return <div className="text-red-500 text-center">{error}</div>;
 
-//axios end
-if (!project) {
-  return <div>Project not found</div>;
-}
+  //axios end
+  if (!project) {
+    return <div>Project not found</div>;
+  }
 
   const handlePurchase = () => {
     navigate('/purchase', { state: { project } });
@@ -92,11 +92,14 @@ if (!project) {
                 </button>
               </div>
 
+            
               <div className="prose prose-invert max-w-none mb-6 sm:mb-8">
-                <div className="text-sm sm:text-base text-gray-400 whitespace-pre-line">
-                  {project.details}
-                </div>
+                <div
+                  className="text-sm sm:text-base text-gray-400 whitespace-pre-line"
+                  dangerouslySetInnerHTML={{ __html: project.details }}
+                />
               </div>
+
 
               <div className="border-t border-purple-500/20 pt-6">
                 <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white">Contact Developer</h3>
